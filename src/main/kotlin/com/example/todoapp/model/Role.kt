@@ -7,8 +7,8 @@ import javax.persistence.*
 data class Role(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int?,
+    var id: Int?,
 
     @Enumerated(EnumType.STRING)
-    val name: ERole
+    var name: ERole
 )

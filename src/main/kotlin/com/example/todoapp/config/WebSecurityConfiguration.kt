@@ -48,6 +48,8 @@ class WebSecurityConfiguration(
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests() // user controller
+            .antMatchers("/hello")
+            .permitAll()
             .antMatchers("/api/users")
             .hasAnyRole(
                 ERole.ROLE_MODERATOR.name,

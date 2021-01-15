@@ -19,23 +19,23 @@ data class User(
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)")                         // MySQL
     //    @GeneratedValue(strategy = GenerationType.AUTO)            // Postgres
-    val id: UUID?,
+    var id: UUID? = null,
 
     @NotBlank(message = "Username is required")
     @Column(unique = true)
-    val username: String?,
+    var username: String?,
 
     @NotBlank(message = "Password is required")
-    val password: String?,
+    var password: String?,
 
     @Email
     @NotEmpty(message = "Email is required")
-    val email: String?,
+    var email: String?,
 
     @CreationTimestamp
-    val created: Date?,
+    var created: Date? = null,
 
-    val enabled: Boolean,
+    var enabled: Boolean,
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -46,7 +46,7 @@ data class User(
     var roles: MutableSet<Role>,
 
     @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL])
-    var verificationToken: VerificationToken?
+    var verificationToken: VerificationToken? = null
 ) {
     fun addVerificationToken(token: VerificationToken) {
         this.verificationToken = token

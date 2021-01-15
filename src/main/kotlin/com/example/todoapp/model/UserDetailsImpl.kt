@@ -7,9 +7,9 @@ import org.springframework.security.core.userdetails.UserDetails
 import java.util.*
 
 data class UserDetailsImpl(
-    private val id: UUID?,
+    val id: UUID?,
     private val username: String?,
-    private val email: String?,
+    val email: String?,
     private val enabled: Boolean = false,
     @JsonIgnore private val password: String?,
     private val authorities: Collection<GrantedAuthority>

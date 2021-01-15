@@ -9,14 +9,14 @@ import javax.persistence.*
 @Table(name = "tokens")
 data class VerificationToken(
     @Id
-    val id: UUID,
+    var id: UUID? = null,
 
-    val token: String,
+    var token: String? = null,
 
     @OneToOne
     @MapsId
     @JsonIgnore
-    var user: User,
+    var user: User? = null,
 
-    val expiryDate: Instant
+    var expiryDate: Instant? = null
 )

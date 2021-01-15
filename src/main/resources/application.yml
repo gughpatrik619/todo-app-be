@@ -3,8 +3,6 @@ server:
 spring:
   profiles:
     active: email,local_datasource
-#  autoconfigure:
-#    exclude[0]: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
 todo:
   app:
     jwt_secret: R5j7qz2HUiWbnnuUvH5RU4Rgu5SkY5pTj60EGr2fcf1jJd82lM7lrSZp3O6xJpQlGJsC9wADlZzBwTGq1wnSPQ
