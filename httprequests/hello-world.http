@@ -1,0 +1,9 @@
+GET {{protocol}}{{host}}:{{port}}/api/hello
+
+> {%
+    client.test("Hello world", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+###

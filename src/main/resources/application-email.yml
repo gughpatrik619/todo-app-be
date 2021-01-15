@@ -1,0 +1,22 @@
+# Fake email client
+#spring:
+#  mail:
+#    host: smtp.mailtrap.io
+#    port: 25
+#    username: dc2fdcc2b2eb58
+#    password: 3c4dda7dd32088
+#    protocol: smtp
+
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: dariusdatasolutions@gmail.com
+    password: DariusDataSolutions000
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+    default-encoding: UTF-8
