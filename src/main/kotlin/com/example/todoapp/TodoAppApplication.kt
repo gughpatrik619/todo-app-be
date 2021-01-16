@@ -26,8 +26,8 @@ class TodoAppApplication {
         passwordEncoder: PasswordEncoder
     ) = CommandLineRunner {
         roleRepository.save(Role(id = null, name = ERole.ROLE_USER))
-        roleRepository.save(Role(id = null, name = ERole.ROLE_ADMIN))
         roleRepository.save(Role(id = null, name = ERole.ROLE_MODERATOR))
+        roleRepository.save(Role(id = null, name = ERole.ROLE_ADMIN))
 
         userRepository.save(User.dummyUser(passwordEncoder, roleRepository))
         userRepository.save(User.dummyAdmin(passwordEncoder, roleRepository))

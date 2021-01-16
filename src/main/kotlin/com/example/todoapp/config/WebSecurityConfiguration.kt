@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 class WebSecurityConfiguration(
     private val userDetailsService: UserDetailsServiceImpl,
     private val unauthorizedHandler: AuthEntryPointJwt
@@ -47,20 +47,12 @@ class WebSecurityConfiguration(
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
-            .authorizeRequests() // user controller
-            .antMatchers("/hello")
-            .permitAll()
-            .antMatchers("/api/users")
-            .hasAnyRole(
-                ERole.ROLE_MODERATOR.name,
-                ERole.ROLE_ADMIN.name,
-                ERole.ROLE_USER.name
-            ) // other apis
+            .authorizeRequests()
             .antMatchers("/api/**")
             .hasAnyRole(
-                ERole.ROLE_MODERATOR.name,
-                ERole.ROLE_ADMIN.name,
-                ERole.ROLE_USER.name
+                ERole.ROLE_USER.shortName,
+                ERole.ROLE_MODERATOR.shortName,
+                ERole.ROLE_ADMIN.shortName
             ) // auth
             .antMatchers("/auth/test/**")
             .permitAll()
