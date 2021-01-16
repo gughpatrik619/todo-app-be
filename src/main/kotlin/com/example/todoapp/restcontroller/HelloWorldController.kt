@@ -6,13 +6,12 @@ import org.springframework.web.bind.annotation.*
 
 @CrossOrigin
 @RestController
-@RequestMapping(value = ["api"])
 class HelloWorldController {
 
     @GetMapping(value = ["hello"], produces = [MediaType.TEXT_PLAIN_VALUE])
     fun hello() = "Hello world!"
 
-    @PreAuthorize(value = "#username == principal.username")
-    @GetMapping(value = ["{username}/roles"], produces = [MediaType.TEXT_PLAIN_VALUE])
-    fun getRolesForUser(@PathVariable username: String) = "roles: a,b,c for user: $username"
+//    @PreAuthorize(value = "#username == principal.username")
+//    @GetMapping(value = ["{username}/roles"], produces = [MediaType.TEXT_PLAIN_VALUE])
+//    fun getRolesForUser(@PathVariable username: String) = "roles: a,b,c for user: $username"
 }

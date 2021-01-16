@@ -23,11 +23,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 class WebSecurityConfiguration(
     private val userDetailsService: UserDetailsServiceImpl,
-    private val unauthorizedHandler: AuthEntryPointJwt
+    private val unauthorizedHandler: AuthEntryPointJwt,
+    private val authTokenFilter: AuthTokenFilter
 ) : WebSecurityConfigurerAdapter() {
-
-    @Bean
-    fun authenticationJwtTokenFilter() = AuthTokenFilter()
 
     @Bean
     override fun authenticationManagerBean(): AuthenticationManager = super.authenticationManagerBean()
@@ -48,6 +46,8 @@ class WebSecurityConfiguration(
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
+            .antMatchers("/hello")
+            .permitAll()
             .antMatchers("/api/**")
             .hasAnyRole(
                 ERole.ROLE_USER.shortName,
@@ -70,7 +70,7 @@ class WebSecurityConfiguration(
             .anyRequest()
             .authenticated()
 
-        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter::class.java)
+        http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
     }
 
     @Autowired

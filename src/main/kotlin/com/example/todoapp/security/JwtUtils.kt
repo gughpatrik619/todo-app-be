@@ -10,10 +10,10 @@ import java.util.*
 
 @Service
 class JwtUtils(
-    @Value("\${todo.app.jwt_secret}")
+    @Value("\${todo.app.jwt.secret}")
     private val jwtSecret: String,
 
-    @Value("\${todo.app.jwt_expiration_ms}")
+    @Value("\${todo.app.jwt.expiration_ms}")
     private val jwtExpirationMs: Int
 ) {
     fun generateJwtToken(authentication: Authentication): String =
