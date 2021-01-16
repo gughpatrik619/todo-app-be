@@ -33,7 +33,8 @@ class LoginService(
                 type = "Bearer token",
                 username = userDetails.username,
                 email = userDetails.email,
-                roles = roles
+                roles = roles,
+                todos = userDetails.todos
             )
         )
     }

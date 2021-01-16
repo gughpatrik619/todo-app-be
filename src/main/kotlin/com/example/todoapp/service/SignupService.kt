@@ -36,7 +36,9 @@ class SignupService(
             enabled = false,
             roles = mutableSetOf(
                 roleRepository.findByName(ERole.ROLE_USER).orElseThrow { RuntimeException("Error: role not found") }
-            )
+            ),
+            todos = mutableListOf(),
+            created = null
         )
 
         val token = UUID.randomUUID().toString()

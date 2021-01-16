@@ -50,9 +50,9 @@ class WebSecurityConfiguration(
             .permitAll()
             .antMatchers("/api/**")
             .hasAnyRole(
-                ERole.ROLE_USER.shortName,
-                ERole.ROLE_MODERATOR.shortName,
-                ERole.ROLE_ADMIN.shortName
+                ERole.ROLE_USER.value,
+                ERole.ROLE_MODERATOR.value,
+                ERole.ROLE_ADMIN.value
             ) // auth
             .antMatchers("/auth/test/**")
             .permitAll()

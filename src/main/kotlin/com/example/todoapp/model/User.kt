@@ -7,9 +7,6 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import java.time.Instant
 import java.util.*
 import javax.persistence.*
-import javax.validation.constraints.Email
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotEmpty
 
 @Entity
 @Table(name = "users")
@@ -21,19 +18,15 @@ data class User(
     //    @GeneratedValue(strategy = GenerationType.AUTO)            // Postgres
     var id: UUID? = null,
 
-    @NotBlank(message = "Username is required")
     @Column(unique = true)
     var username: String?,
 
-    @NotBlank(message = "Password is required")
     var password: String?,
 
-    @Email
-    @NotEmpty(message = "Email is required")
     var email: String?,
 
     @CreationTimestamp
-    var created: Date? = null,
+    var created: Instant?,
 
     var enabled: Boolean,
 
@@ -45,12 +38,25 @@ data class User(
     )
     var roles: MutableSet<Role>,
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
+    var todos: MutableList<Todo>,
+
     @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL])
     var verificationToken: VerificationToken? = null
 ) {
     fun addVerificationToken(token: VerificationToken) {
         this.verificationToken = token
         token.user = this
+    }
+
+    fun addTodo(todo: Todo) {
+        todos.add(todo)
+        todo.user = this
+    }
+
+    fun removeTodo(todo: Todo) {
+        todos.remove(todo)
+        todo.user = null
     }
 
     companion object {
@@ -62,13 +68,19 @@ data class User(
                 email = "user@domain.com",
                 enabled = true,
                 verificationToken = null,
-                created = Date.from(Instant.now()),
+                created = null,
                 roles = mutableSetOf(
                     roleRepository.findByName(ERole.ROLE_USER).orElseThrow {
                         RuntimeException("Error: role not found")
                     }
-                )
-            )
+                ),
+                todos = mutableListOf()
+            ).apply {
+                this.addTodo(Todo.random())
+                this.addTodo(Todo.random())
+                this.addTodo(Todo.random())
+                this.addTodo(Todo.random())
+            }
 
         fun dummyAdmin(passwordEncoder: PasswordEncoder, roleRepository: RoleRepository) =
             User(
@@ -78,7 +90,7 @@ data class User(
                 email = "admin@domain.com",
                 enabled = true,
                 verificationToken = null,
-                created = Date.from(Instant.now()),
+                created = null,
                 roles = mutableSetOf(
                     roleRepository.findByName(ERole.ROLE_USER).orElseThrow {
                         RuntimeException("Error: role not found")
@@ -89,7 +101,13 @@ data class User(
                     roleRepository.findByName(ERole.ROLE_ADMIN).orElseThrow {
                         RuntimeException("Error: role not found")
                     }
-                )
-            )
+                ),
+                todos = mutableListOf()
+            ).apply {
+                this.addTodo(Todo.random())
+                this.addTodo(Todo.random())
+                this.addTodo(Todo.random())
+                this.addTodo(Todo.random())
+            }
     }
 }

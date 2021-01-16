@@ -1,6 +1,5 @@
 package com.example.todoapp.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
@@ -11,7 +10,8 @@ data class UserDetailsImpl(
     private val username: String?,
     val email: String?,
     private val enabled: Boolean = false,
-    @JsonIgnore private val password: String?,
+    val todos: List<Todo>,
+    private val password: String?,
     private val authorities: Collection<GrantedAuthority>
 ) : UserDetails {
 
@@ -25,6 +25,7 @@ data class UserDetailsImpl(
                 enabled = user.enabled,
                 password = user.password,
                 username = user.username,
+                todos = user.todos,
                 authorities = user.roles.map { SimpleGrantedAuthority(it.name.name) }
             )
     }
