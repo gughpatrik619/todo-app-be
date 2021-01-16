@@ -6,7 +6,6 @@ import com.example.todoapp.repository.UserRepository
 import com.example.todoapp.repository.VerificationTokenRepository
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class AccountVerificationService(
@@ -14,9 +13,9 @@ class AccountVerificationService(
     private val userRepository: UserRepository
 ) {
     fun verifyAccount(token: String): ResponseEntity<MessageResponse> {
-        val verificationToken: Optional<VerificationToken> = verificationTokenRepository.findByToken(token)
+        val verificationToken = verificationTokenRepository.findByToken(token)
         fetchUserAndEnable(verificationToken.orElseThrow { RuntimeException("Invalid token") })
-        return ResponseEntity.ok(MessageResponse("Account verified succesfully"))
+        return ResponseEntity.ok(MessageResponse("Account verified successfully"))
     }
 
     private fun fetchUserAndEnable(verificationToken: VerificationToken) {
