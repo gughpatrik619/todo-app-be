@@ -1,8 +1,6 @@
-server:
-  port: 8081
 spring:
   profiles:
-    active: email,local_datasource
+    active: email,dev
 todo:
   app:
     jwt:
