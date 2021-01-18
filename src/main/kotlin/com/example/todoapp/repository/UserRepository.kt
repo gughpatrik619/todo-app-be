@@ -13,6 +13,4 @@ interface UserRepository : JpaRepository<User, UUID> {
     fun existsByUsername(username: String?): Boolean
 
     fun existsByEmail(email: String?): Boolean
-
-    fun deleteByUsername(username: String?)
 }

@@ -10,16 +10,24 @@ import java.time.Instant
 import java.util.*
 
 @Service
-class JwtUtils(
+class JwtProvider(
     @Value("\${todo.app.jwt.secret}")
-    private val jwtSecret: String,
+    val jwtSecret: String,
 
     @Value("\${todo.app.jwt.expiration_ms}")
-    private val jwtExpirationMs: Long
+    val jwtExpirationMs: Long
 ) {
     fun generateJwtToken(authentication: Authentication): String =
         Jwts.builder()
             .setSubject((authentication.principal as UserDetailsImpl).username)
+            .setIssuedAt(Date.from(Instant.now()))
+            .setExpiration(Date.from(Instant.now().plusMillis(jwtExpirationMs)))
+            .signWith(SignatureAlgorithm.HS512, jwtSecret)
+            .compact()
+
+    fun generateJwtTokenWithUsername(username: String): String =
+        Jwts.builder()
+            .setSubject(username)
             .setIssuedAt(Date.from(Instant.now()))
             .setExpiration(Date.from(Instant.now().plusMillis(jwtExpirationMs)))
             .signWith(SignatureAlgorithm.HS512, jwtSecret)

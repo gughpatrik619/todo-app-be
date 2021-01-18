@@ -6,3 +6,5 @@ todo:
     jwt:
       secret: R5j7qz2HUiWbnnuUvH5RU4Rgu5SkY5pTj60EGr2fcf1jJd82lM7lrSZp3O6xJpQlGJsC9wADlZzBwTGq1wnSPQ
       expiration_ms: 86400000 # 1 day
+    verification_token:
+      expiration_ms: 3600000 # 1 hour

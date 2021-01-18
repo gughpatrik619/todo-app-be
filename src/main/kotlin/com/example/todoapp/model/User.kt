@@ -36,7 +36,7 @@ data class User(
         joinColumns = [JoinColumn(name = "user_id")],
         inverseJoinColumns = [JoinColumn(name = "role_id")]
     )
-    var roles: MutableSet<Role>,
+    var roles: MutableList<Role>,
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
     var todos: MutableList<Todo>,
@@ -69,7 +69,7 @@ data class User(
                 enabled = true,
                 verificationToken = null,
                 created = null,
-                roles = mutableSetOf(
+                roles = mutableListOf(
                     roleRepository.findByName(ERole.ROLE_USER).orElseThrow {
                         RuntimeException("Error: role not found")
                     }
@@ -91,7 +91,7 @@ data class User(
                 enabled = true,
                 verificationToken = null,
                 created = null,
-                roles = mutableSetOf(
+                roles = mutableListOf(
                     roleRepository.findByName(ERole.ROLE_USER).orElseThrow {
                         RuntimeException("Error: role not found")
                     },

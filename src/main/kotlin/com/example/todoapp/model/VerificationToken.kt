@@ -6,7 +6,7 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-@Table(name = "tokens")
+@Table(name = "verification_tokens")
 data class VerificationToken(
     @Id
     var id: UUID? = null,
@@ -18,5 +18,7 @@ data class VerificationToken(
     @JsonIgnore
     var user: User? = null,
 
-    var expiryDate: Instant? = null
-)
+    var expiresAt: Instant? = null
+) {
+    fun expired() = expiresAt!!.isBefore(Instant.now())
+}

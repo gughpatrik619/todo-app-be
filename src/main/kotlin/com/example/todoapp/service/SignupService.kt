@@ -8,10 +8,13 @@ import com.example.todoapp.payload.request.SignupRequest
 import com.example.todoapp.payload.response.MessageResponse
 import com.example.todoapp.repository.RoleRepository
 import com.example.todoapp.repository.UserRepository
+import com.example.todoapp.security.JwtProvider
 import com.example.todoapp.util.Constants
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import java.time.Instant
 import java.util.*
 
 @Service
@@ -19,14 +22,18 @@ class SignupService(
     private val roleRepository: RoleRepository,
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
-    private val mailService: MailService
+    private val mailService: MailService,
+    private val jwtProvider: JwtProvider,
+
+    @Value("\${todo.app.verification_token.expiration_ms}")
+    val verificationTokenExpirationMs: Long
 ) {
     fun signup(signupRequest: SignupRequest): ResponseEntity<MessageResponse> {
         if (userRepository.existsByUsername(signupRequest.username)) {
-            return ResponseEntity.badRequest().body(MessageResponse("Error: Username is already taken!"))
+            return ResponseEntity.badRequest().body(MessageResponse("Username is already taken"))
         }
         if (userRepository.existsByEmail(signupRequest.email)) {
-            return ResponseEntity.badRequest().body(MessageResponse("Error: Email is already in use!"))
+            return ResponseEntity.badRequest().body(MessageResponse("Email is already in use"))
         }
 
         val user = User(
@@ -34,7 +41,7 @@ class SignupService(
             email = signupRequest.email,
             password = passwordEncoder.encode(signupRequest.password),
             enabled = false,
-            roles = mutableSetOf(
+            roles = mutableListOf(
                 roleRepository.findByName(ERole.ROLE_USER).orElseThrow { RuntimeException("Error: role not found") }
             ),
             todos = mutableListOf(),
@@ -42,7 +49,13 @@ class SignupService(
         )
 
         val token = UUID.randomUUID().toString()
-        user.addVerificationToken(VerificationToken(token = token))
+        val expiry = Instant.now().plusMillis(verificationTokenExpirationMs)
+        user.addVerificationToken(
+            VerificationToken(
+                token = token,
+                expiresAt = expiry
+            )
+        )
         userRepository.save(user)
         mailService.sendActivationEmail(
             ActivationEmail(
@@ -51,6 +64,6 @@ class SignupService(
                 activationUrl = "${Constants.ACTIVATION_EMAIL_URI}$token"
             )
         )
-        return ResponseEntity.ok(MessageResponse("Activation email sent!"))
+        return ResponseEntity.ok(MessageResponse("Activation email sent. Expires at: $expiry"))
     }
 }

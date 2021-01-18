@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse
 
 @Component
 class AuthTokenFilter(
-    private val jwtUtils: JwtUtils,
+    private val jwtProvider: JwtProvider,
     private val userDetailsService: UserDetailsServiceImpl
 ) : OncePerRequestFilter() {
 
@@ -24,8 +24,8 @@ class AuthTokenFilter(
     ) {
         try {
             val jwt = parseJwt(request)
-            if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
-                val username = jwtUtils.getUserNameFromJwtToken(jwt)
+            if (jwt != null && jwtProvider.validateJwtToken(jwt)) {
+                val username = jwtProvider.getUserNameFromJwtToken(jwt)
                 val userDetails = userDetailsService.loadUserByUsername(username)
                 val authentication = UsernamePasswordAuthenticationToken(
                     userDetails, null, userDetails.authorities
