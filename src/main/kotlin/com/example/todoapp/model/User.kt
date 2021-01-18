@@ -75,12 +75,7 @@ data class User(
                     }
                 ),
                 todos = mutableListOf()
-            ).apply {
-                this.addTodo(Todo.random())
-                this.addTodo(Todo.random())
-                this.addTodo(Todo.random())
-                this.addTodo(Todo.random())
-            }
+            ).apply { repeat(20) { this.addTodo(Todo.random()) } }
 
         fun dummyAdmin(passwordEncoder: PasswordEncoder, roleRepository: RoleRepository) =
             User(
@@ -103,11 +98,6 @@ data class User(
                     }
                 ),
                 todos = mutableListOf()
-            ).apply {
-                this.addTodo(Todo.random())
-                this.addTodo(Todo.random())
-                this.addTodo(Todo.random())
-                this.addTodo(Todo.random())
-            }
+            ).apply { repeat(20) { this.addTodo(Todo.random()) } }
     }
 }
