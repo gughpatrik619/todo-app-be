@@ -1,6 +1,6 @@
 package com.example.todoapp.service
 
-import com.example.todoapp.model.RefreshToken
+import com.example.todoapp.model.RefreshTokenEntity
 import com.example.todoapp.model.UserDetailsImpl
 import com.example.todoapp.payload.request.LoginRequest
 import com.example.todoapp.payload.response.AuthenticationResponse
@@ -28,7 +28,7 @@ class LoginService(
         SecurityContextHolder.getContext().authentication = authentication
         val jwtToken = jwtProvider.generateJwtToken(authentication)
         val refreshToken = refreshTokenRepository.save(
-            RefreshToken(
+            RefreshTokenEntity(
                 id = null,
                 token = UUID.randomUUID().toString(),
                 created = null

@@ -1,6 +1,6 @@
 package com.example.todoapp.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
+import com.example.todoapp.model.dto.TodoDto
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.Instant
@@ -10,7 +10,7 @@ import kotlin.random.Random
 
 @Entity
 @Table(name = "todos")
-data class Todo(
+data class TodoEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
@@ -35,12 +35,23 @@ data class Todo(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @JsonIgnore
-    var user: User?
+    var user: UserEntity?
 ) {
+    fun toDto() =
+        TodoDto(
+            id = id,
+            title = title,
+            description = description,
+            created = created,
+            dueDate = dueDate,
+            lastUpdated = lastUpdated,
+            state = state,
+            priority = priority
+        )
+
     companion object {
         fun random() =
-            Todo(
+            TodoEntity(
                 id = null,
                 title = "Title ${Random.nextInt(0, 1000)}",
                 description = "Desc ${Random.nextInt(0, 1000)}",

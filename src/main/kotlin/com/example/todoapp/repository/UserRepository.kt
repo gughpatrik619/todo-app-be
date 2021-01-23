@@ -1,14 +1,14 @@
 package com.example.todoapp.repository
 
-import com.example.todoapp.model.User
+import com.example.todoapp.model.UserEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 
-interface UserRepository : JpaRepository<User, UUID> {
+interface UserRepository : JpaRepository<UserEntity, UUID> {
 
-    fun findByUsername(username: String?): Optional<User>
+    fun findByUsername(username: String?): Optional<UserEntity>
 
-    fun findByEmail(email: String?): Optional<User>
+    fun findByEmail(email: String?): Optional<UserEntity>
 
     fun existsByUsername(username: String?): Boolean
 

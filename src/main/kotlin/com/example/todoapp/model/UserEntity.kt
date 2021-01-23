@@ -1,5 +1,6 @@
 package com.example.todoapp.model
 
+import com.example.todoapp.exception.ResourceNotFoundException
 import com.example.todoapp.repository.RoleRepository
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.GenericGenerator
@@ -10,7 +11,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "users")
-data class User(
+data class UserEntity(
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
@@ -36,32 +37,32 @@ data class User(
         joinColumns = [JoinColumn(name = "user_id")],
         inverseJoinColumns = [JoinColumn(name = "role_id")]
     )
-    var roles: MutableList<Role>,
+    var roles: MutableList<RoleEntity>,
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
-    var todos: MutableList<Todo>,
+    var todos: MutableList<TodoEntity>,
 
     @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL])
-    var verificationToken: VerificationToken? = null
+    var verificationToken: VerificationTokenEntity? = null
 ) {
-    fun addVerificationToken(token: VerificationToken) {
+    fun addVerificationToken(token: VerificationTokenEntity) {
         this.verificationToken = token
         token.user = this
     }
 
-    fun addTodo(todo: Todo) {
+    fun addTodo(todo: TodoEntity) {
         todos.add(todo)
         todo.user = this
     }
 
-    fun removeTodo(todo: Todo) {
+    fun removeTodo(todo: TodoEntity) {
         todos.remove(todo)
         todo.user = null
     }
 
     companion object {
         fun dummyUser(passwordEncoder: PasswordEncoder, roleRepository: RoleRepository) =
-            User(
+            UserEntity(
                 id = null,
                 username = "user",
                 password = passwordEncoder.encode("password"),
@@ -71,14 +72,14 @@ data class User(
                 created = null,
                 roles = mutableListOf(
                     roleRepository.findByName(ERole.ROLE_USER).orElseThrow {
-                        RuntimeException("Error: role not found")
+                        ResourceNotFoundException("Error: role not found")
                     }
                 ),
                 todos = mutableListOf()
-            ).apply { repeat(20) { this.addTodo(Todo.random()) } }
+            ) // .apply { repeat(20) { this.addTodo(TodoEntity.random()) } }
 
         fun dummyAdmin(passwordEncoder: PasswordEncoder, roleRepository: RoleRepository) =
-            User(
+            UserEntity(
                 id = null,
                 username = "admin",
                 password = passwordEncoder.encode("password"),
@@ -88,16 +89,16 @@ data class User(
                 created = null,
                 roles = mutableListOf(
                     roleRepository.findByName(ERole.ROLE_USER).orElseThrow {
-                        RuntimeException("Error: role not found")
+                        ResourceNotFoundException("Error: role not found")
                     },
                     roleRepository.findByName(ERole.ROLE_MODERATOR).orElseThrow {
-                        RuntimeException("Error: role not found")
+                        ResourceNotFoundException("Error: role not found")
                     },
                     roleRepository.findByName(ERole.ROLE_ADMIN).orElseThrow {
-                        RuntimeException("Error: role not found")
+                        ResourceNotFoundException("Error: role not found")
                     }
                 ),
                 todos = mutableListOf()
-            ).apply { repeat(20) { this.addTodo(Todo.random()) } }
+            ) // .apply { repeat(20) { this.addTodo(TodoEntity.random()) } }
     }
 }

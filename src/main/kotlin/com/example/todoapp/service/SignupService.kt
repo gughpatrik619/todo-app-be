@@ -1,9 +1,10 @@
 package com.example.todoapp.service
 
+import com.example.todoapp.exception.ResourceNotFoundException
 import com.example.todoapp.model.ActivationEmail
 import com.example.todoapp.model.ERole
-import com.example.todoapp.model.User
-import com.example.todoapp.model.VerificationToken
+import com.example.todoapp.model.UserEntity
+import com.example.todoapp.model.VerificationTokenEntity
 import com.example.todoapp.payload.request.SignupRequest
 import com.example.todoapp.payload.response.MessageResponse
 import com.example.todoapp.repository.RoleRepository
@@ -36,13 +37,13 @@ class SignupService(
             return ResponseEntity.badRequest().body(MessageResponse("Email is already in use"))
         }
 
-        val user = User(
+        val user = UserEntity(
             username = signupRequest.username,
             email = signupRequest.email,
             password = passwordEncoder.encode(signupRequest.password),
             enabled = false,
             roles = mutableListOf(
-                roleRepository.findByName(ERole.ROLE_USER).orElseThrow { RuntimeException("Error: role not found") }
+                roleRepository.findByName(ERole.ROLE_USER).orElseThrow { ResourceNotFoundException("Role not found") }
             ),
             todos = mutableListOf(),
             created = null
@@ -51,7 +52,7 @@ class SignupService(
         val token = UUID.randomUUID().toString()
         val expiry = Instant.now().plusMillis(verificationTokenExpirationMs)
         user.addVerificationToken(
-            VerificationToken(
+            VerificationTokenEntity(
                 token = token,
                 expiresAt = expiry
             )

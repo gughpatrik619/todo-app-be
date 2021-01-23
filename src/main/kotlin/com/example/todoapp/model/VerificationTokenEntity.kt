@@ -7,7 +7,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "verification_tokens")
-data class VerificationToken(
+data class VerificationTokenEntity(
     @Id
     var id: UUID? = null,
 
@@ -16,7 +16,7 @@ data class VerificationToken(
     @OneToOne
     @MapsId
     @JsonIgnore
-    var user: User? = null,
+    var user: UserEntity? = null,
 
     var expiresAt: Instant? = null
 ) {

@@ -6,7 +6,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "refresh_tokens")
-data class RefreshToken(
+data class RefreshTokenEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,

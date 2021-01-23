@@ -10,7 +10,7 @@ data class UserDetailsImpl(
     private val username: String?,
     val email: String?,
     private val enabled: Boolean = false,
-    val todos: List<Todo>,
+    val todos: List<TodoEntity>,
     private val password: String?,
     private val authorities: Collection<GrantedAuthority>
 ) : UserDetails {
@@ -18,7 +18,7 @@ data class UserDetailsImpl(
     companion object {
         const val serialVersionUID = 1L
 
-        fun build(user: User) =
+        fun build(user: UserEntity) =
             UserDetailsImpl(
                 id = user.id,
                 email = user.email,

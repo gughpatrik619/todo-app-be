@@ -3,7 +3,7 @@ package com.example.todoapp.service
 import com.example.todoapp.exception.InvalidTokenException
 import com.example.todoapp.exception.ResourceNotFoundException
 import com.example.todoapp.exception.TokenExpiredException
-import com.example.todoapp.model.VerificationToken
+import com.example.todoapp.model.VerificationTokenEntity
 import com.example.todoapp.payload.response.MessageResponse
 import com.example.todoapp.repository.UserRepository
 import com.example.todoapp.repository.VerificationTokenRepository
@@ -31,7 +31,7 @@ class AccountVerificationService(
         return ResponseEntity.ok(MessageResponse("Account verified successfully"))
     }
 
-    private fun fetchUserAndEnable(verificationToken: VerificationToken) {
+    private fun fetchUserAndEnable(verificationToken: VerificationTokenEntity) {
         val username = verificationToken.user?.username
         val user = userRepository.findByUsername(username)
             .orElseThrow { ResourceNotFoundException("User not found with name: $username") }
