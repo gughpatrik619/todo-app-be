@@ -76,7 +76,7 @@ data class UserEntity(
                     }
                 ),
                 todos = mutableListOf()
-            ) // .apply { repeat(20) { this.addTodo(TodoEntity.random()) } }
+            ).apply { repeat(20) { this.addTodo(TodoEntity.random()) } }
 
         fun dummyAdmin(passwordEncoder: PasswordEncoder, roleRepository: RoleRepository) =
             UserEntity(
@@ -99,6 +99,6 @@ data class UserEntity(
                     }
                 ),
                 todos = mutableListOf()
-            ) // .apply { repeat(20) { this.addTodo(TodoEntity.random()) } }
+            ).apply { repeat(20) { this.addTodo(TodoEntity.random()) } }
     }
 }
