@@ -20,7 +20,7 @@ data class CreateTodoDto(
             description = description,
             dueDate = dueDate,
             priority = priority,
-            state = EState.TO_DO,
+            state = EState.`TO DO`,
             user = null
         )
 }

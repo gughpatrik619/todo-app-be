@@ -2,7 +2,7 @@ package com.example.todoapp.model
 
 enum class EState {
     DONE,
-    IN_PROGRESS,
+    `IN PROGRESS`,
     DEFERRED,
-    TO_DO
+    `TO DO`
 }
