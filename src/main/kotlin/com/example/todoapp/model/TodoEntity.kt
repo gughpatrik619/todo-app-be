@@ -1,6 +1,7 @@
 package com.example.todoapp.model
 
 import com.example.todoapp.model.dto.TodoDto
+import com.example.todoapp.model.dto.UpdateTodoDto
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.Instant
@@ -48,6 +49,14 @@ data class TodoEntity(
             state = state,
             priority = priority
         )
+
+    fun updateFromDto(updateTodoDto: UpdateTodoDto) {
+        title = updateTodoDto.title ?: title
+        description = updateTodoDto.description ?: description
+        dueDate = updateTodoDto.dueDate ?: dueDate
+        priority = updateTodoDto.priority ?: priority
+        state = updateTodoDto.state ?: state
+    }
 
     companion object {
         fun random() =
