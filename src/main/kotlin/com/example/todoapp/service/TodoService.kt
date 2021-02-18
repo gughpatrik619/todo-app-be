@@ -13,16 +13,25 @@ class TodoService(
     private val todoRepository: TodoRepository,
     private val userRepository: UserRepository
 ) {
-    fun getAllByUsername(username: String) = todoRepository.findByUserUsername(username).map { it.toDto() }
+    fun getAllForUser(username: String) = todoRepository.findByUserUsername(username).map { it.toDto() }
 
-    fun saveByUsername(username: String, createTodoDto: CreateTodoDto): TodoDto =
+    fun getByIdForUser(username: String, id: Long): TodoDto {
+        if (!userRepository.existsByUsername(username))
+            throw ResourceNotFoundException("Not found user $username")
+
+        return todoRepository.findByUserUsernameAndId(username, id)
+            .orElseThrow { ResourceNotFoundException("Not found Todo with id $id") }
+            .toDto()
+    }
+
+    fun saveForUser(username: String, createTodoDto: CreateTodoDto): TodoDto =
         userRepository.findByUsername(username).map {
             val todoEntity = createTodoDto.toEntity()
             it.addTodo(todoEntity)
             todoRepository.save(todoEntity).toDto()
         }.orElseThrow { ResourceNotFoundException("Not found user $username") }
 
-    fun updateByUsername(username: String, id: Long, updateTodoDto: UpdateTodoDto): TodoDto {
+    fun updateForUser(username: String, id: Long, updateTodoDto: UpdateTodoDto): TodoDto {
         if (!userRepository.existsByUsername(username))
             throw ResourceNotFoundException("Not found user $username")
 
@@ -33,7 +42,7 @@ class TodoService(
         return todoRepository.save(todoToUpdate).toDto()
     }
 
-    fun deleteById(username: String, id: Long) {
+    fun deleteByIdForUser(username: String, id: Long) {
         if (!userRepository.existsByUsername(username))
             throw ResourceNotFoundException("Not found user $username")
 

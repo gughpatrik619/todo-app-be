@@ -17,7 +17,15 @@ class TodoController(private val todoService: TodoService) {
         value = ["users/{username}/todos"],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun getAllByUsername(@PathVariable username: String) = todoService.getAllByUsername(username)
+    fun getForUser(@PathVariable username: String) = todoService.getAllForUser(username)
+
+    @PreAuthorize(value = "#username == principal.username")
+    @GetMapping(
+        value = ["users/{username}/todos/{id}"],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    fun getByIdForUser(@PathVariable username: String, @PathVariable id: Long) =
+        todoService.getByIdForUser(username, id)
 
     @PreAuthorize(value = "#username == principal.username")
     @PostMapping(
@@ -25,8 +33,8 @@ class TodoController(private val todoService: TodoService) {
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun saveByUsername(@PathVariable username: String, @RequestBody createTodoDto: CreateTodoDto) =
-        todoService.saveByUsername(username, createTodoDto)
+    fun saveForUser(@PathVariable username: String, @RequestBody createTodoDto: CreateTodoDto) =
+        todoService.saveForUser(username, createTodoDto)
 
     @PreAuthorize(value = "#username == principal.username")
     @PutMapping(
@@ -34,13 +42,13 @@ class TodoController(private val todoService: TodoService) {
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun updateByUsername(
+    fun updateForUser(
         @PathVariable username: String,
         @PathVariable id: Long,
         @RequestBody updateTodoDto: UpdateTodoDto
-    ) = todoService.updateByUsername(username, id, updateTodoDto)
+    ) = todoService.updateForUser(username, id, updateTodoDto)
 
     @PreAuthorize(value = "#username == principal.username")
     @DeleteMapping(value = ["users/{username}/todos/{id}"])
-    fun deleteById(@PathVariable username: String, @PathVariable id: Long) = todoService.deleteById(username, id)
+    fun deleteByIdForUser(@PathVariable username: String, @PathVariable id: Long) = todoService.deleteByIdForUser(username, id)
 }

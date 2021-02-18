@@ -1,12 +1,3 @@
-# Fake email client
-#spring:
-#  mail:
-#    host: smtp.mailtrap.io
-#    port: 25
-#    username: dc2fdcc2b2eb58
-#    password: 3c4dda7dd32088
-#    protocol: smtp
-
 spring:
   mail:
     host: smtp.gmail.com
