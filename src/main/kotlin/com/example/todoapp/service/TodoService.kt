@@ -35,8 +35,8 @@ class TodoService(
         if (!userRepository.existsByUsername(username))
             throw ResourceNotFoundException("Not found user $username")
 
-        val todoToUpdate = todoRepository.findByUserUsername(username).firstOrNull { it.id == id }
-            ?: throw ResourceNotFoundException("Not found Todo with id $id")
+        val todoToUpdate = todoRepository.findByUserUsernameAndId(username, id)
+            .orElseThrow { ResourceNotFoundException("Not found Todo with id $id") }
 
         todoToUpdate.updateFromDto(updateTodoDto)
         return todoRepository.save(todoToUpdate).toDto()

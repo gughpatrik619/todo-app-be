@@ -67,7 +67,7 @@ data class TodoEntity(
                 created = null,
                 user = null,
                 lastUpdated = null,
-                dueDate = Instant.now().plus(Random.nextLong(1, 10), ChronoUnit.DAYS),
+                dueDate = Instant.now().plus(Random.nextLong(1, 30), ChronoUnit.DAYS),
                 priority = EPriority.values().toList().shuffled()[0],
                 state = EState.values().toList().shuffled()[0]
             )
