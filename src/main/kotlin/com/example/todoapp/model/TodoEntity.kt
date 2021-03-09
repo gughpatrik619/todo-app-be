@@ -18,6 +18,7 @@ data class TodoEntity(
 
     var title: String?,
 
+    @Lob
     var description: String?,
 
     @CreationTimestamp
