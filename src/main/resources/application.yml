@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: email,dev
+    active: email,dev # prod
 todo:
   app:
     jwt:
