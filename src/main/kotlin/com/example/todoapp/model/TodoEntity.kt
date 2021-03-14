@@ -3,7 +3,6 @@ package com.example.todoapp.model
 import com.example.todoapp.model.dto.TodoDto
 import com.example.todoapp.model.dto.UpdateTodoDto
 import org.hibernate.annotations.CreationTimestamp
-import org.hibernate.annotations.Type
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -20,8 +19,6 @@ data class TodoEntity(
     var title: String?,
 
     @Lob
-    // https://stackoverflow.com/questions/36122193/jpa-lob-property-encoding-not-working-with-postgresql-text
-    @Type(type = "org.hibernate.type.StringBlobType")
     var description: String?,
 
     @CreationTimestamp

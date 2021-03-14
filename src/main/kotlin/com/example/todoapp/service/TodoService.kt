@@ -7,14 +7,17 @@ import com.example.todoapp.model.dto.UpdateTodoDto
 import com.example.todoapp.repository.TodoRepository
 import com.example.todoapp.repository.UserRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class TodoService(
     private val todoRepository: TodoRepository,
     private val userRepository: UserRepository
 ) {
+    @Transactional(readOnly = true)
     fun getAllForUser(username: String) = todoRepository.findByUserUsername(username).map { it.toDto() }
 
+    @Transactional(readOnly = true)
     fun getByIdForUser(username: String, id: Long): TodoDto {
         if (!userRepository.existsByUsername(username))
             throw ResourceNotFoundException("Not found user $username")
@@ -46,9 +49,9 @@ class TodoService(
         if (!userRepository.existsByUsername(username))
             throw ResourceNotFoundException("Not found user $username")
 
-        val todoToUpdate = todoRepository.findByUserUsername(username).firstOrNull { it.id == id }
+        val todoToDelete = todoRepository.findByUserUsername(username).firstOrNull { it.id == id }
             ?: throw ResourceNotFoundException("Not found Todo with id $id")
 
-        todoRepository.deleteById(id)
+        todoRepository.delete(todoToDelete)
     }
 }
