@@ -10,14 +10,13 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional(readOnly = true)
 class TodoService(
     private val todoRepository: TodoRepository,
     private val userRepository: UserRepository
 ) {
-    @Transactional(readOnly = true)
     fun getAllForUser(username: String) = todoRepository.findByUserUsername(username).map { it.toDto() }
 
-    @Transactional(readOnly = true)
     fun getByIdForUser(username: String, id: Long): TodoDto {
         if (!userRepository.existsByUsername(username))
             throw ResourceNotFoundException("Not found user $username")
