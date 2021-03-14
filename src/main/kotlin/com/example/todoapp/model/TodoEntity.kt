@@ -20,7 +20,8 @@ data class TodoEntity(
     var title: String?,
 
     @Lob
-    @Type(type = "org.hibernate.type.StringClobType") // Postgres
+    // https://stackoverflow.com/questions/36122193/jpa-lob-property-encoding-not-working-with-postgresql-text
+    @Type(type = "org.hibernate.type.StringBlobType")
     var description: String?,
 
     @CreationTimestamp
