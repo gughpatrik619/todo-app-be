@@ -13,10 +13,10 @@ import javax.persistence.*
 @Table(name = "users")
 data class UserEntity(
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(columnDefinition = "BINARY(16)")                         // MySQL
-    //    @GeneratedValue(strategy = GenerationType.AUTO)            // Postgres
+//    @GeneratedValue(generator = "uuid2")
+//    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+//    @Column(columnDefinition = "BINARY(16)")                         // MySQL
+    @GeneratedValue(strategy = GenerationType.AUTO)            // Postgres
     var id: UUID? = null,
 
     @Column(unique = true)
