@@ -3,6 +3,7 @@ package com.example.todoapp.model
 import com.example.todoapp.model.dto.TodoDto
 import com.example.todoapp.model.dto.UpdateTodoDto
 import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.Type
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -19,6 +20,7 @@ data class TodoEntity(
     var title: String?,
 
     @Lob
+    @Type(type = "org.hibernate.type.StringClobType") // Postgres
     var description: String?,
 
     @CreationTimestamp
