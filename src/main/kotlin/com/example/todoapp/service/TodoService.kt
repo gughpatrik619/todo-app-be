@@ -7,10 +7,8 @@ import com.example.todoapp.model.dto.UpdateTodoDto
 import com.example.todoapp.repository.TodoRepository
 import com.example.todoapp.repository.UserRepository
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 @Service
-//@Transactional
 class TodoService(
     private val todoRepository: TodoRepository,
     private val userRepository: UserRepository
