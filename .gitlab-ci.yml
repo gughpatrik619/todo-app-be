@@ -1,19 +1,7 @@
 image: ubuntu:latest
 
 stages:
-  - build
-  - test
   - deploy
-
-maven-build:
-  image: maven:3-jdk-8
-  stage: build
-  script: "mvn package -B"
-
-maven-test:
-  image: maven:3-jdk-8
-  stage: test
-  script: "mvn test -B"
 
 deploy:
   stage: deploy
