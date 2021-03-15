@@ -20,7 +20,7 @@ data class TodoEntity(
     var title: String?,
 
     @Lob
-    @Type(type = "org.hibernate.type.TextType")
+    @Type(type = "org.hibernate.type.TextType") // for PostgreSQL
     var description: String?,
 
     @CreationTimestamp
